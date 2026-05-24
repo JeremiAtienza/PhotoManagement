@@ -1,6 +1,6 @@
 Django==5.0.6
-cloudinary
-django-cloudinary-storage
+cloudinary==1.44.2
+django-cloudinary-storage==0.3.0
 gunicorn
 whitenoise
 psycopg[binary]==3.2.13
