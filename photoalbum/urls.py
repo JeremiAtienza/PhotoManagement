@@ -2,12 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from albums.views import AdminAnalyticsView, AlbumCreateView, AlbumDeleteView, AlbumDetailView, AlbumListView, AlbumUpdateView, DashboardView, PhotoDeleteView, PhotoUpdateView, PhotoUploadView
-from albums.views import RegisterView
+from albums.views import AdminAnalyticsView, AlbumCreateView, AlbumDeleteView, AlbumDetailView, AlbumListView, AlbumUpdateView, DashboardView, PhotoDeleteView, PhotoUpdateView, PhotoUploadView, RegisterView, landing_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', AlbumListView.as_view(), name='album_list'),
+    path('', landing_page, name='landing'),
+    path('albums/', AlbumListView.as_view(), name='album_list'),
     path('albums/create/', AlbumCreateView.as_view(), name='album_create'),
     path('albums/<int:pk>/', AlbumDetailView.as_view(), name='album_detail'),
     path('albums/<int:pk>/edit/', AlbumUpdateView.as_view(), name='album_update'),

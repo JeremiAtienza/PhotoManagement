@@ -3,11 +3,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.db.models import Q
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from .forms import AlbumForm, PhotoEditForm, PhotoUploadForm
 from .models import Album, Photo
+
+
+def landing_page(request):
+    """Public landing page for unauthenticated users."""
+    if request.user.is_authenticated:
+        return AlbumListView.as_view()(request)
+    return HttpResponse("Welcome to Photo Album Manager. <a href='/accounts/login/'>Login</a> or <a href='/accounts/register/'>Register</a>")
 
 
 def is_album_admin(user):
