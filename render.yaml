@@ -20,7 +20,7 @@ services:
           name: photoflow-db
           property: connectionString
       - key: CLOUDINARY_URL
-        sync: false
+        value: cloudinary://demo:demo@demo
       - key: CSRF_TRUSTED_ORIGINS
         value: https://photomanagement.onrender.com
 
