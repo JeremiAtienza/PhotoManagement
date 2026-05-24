@@ -19,7 +19,7 @@ if DJANGO_ENV == 'production' and not SECRET_KEY:
 
 SECRET_KEY = SECRET_KEY or 'dev-only-insecure-key'
 
-ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if host.strip()]
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,*').split(',') if host.strip()]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(',') if origin.strip()]
 
 INSTALLED_APPS = [
