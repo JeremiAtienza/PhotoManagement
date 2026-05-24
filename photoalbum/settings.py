@@ -80,7 +80,7 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 
 if DATABASE_URL:
     parsed = urlparse(DATABASE_URL)
-    if parsed.scheme not in ('postgres', 'postgresql'):
+    if not parsed.scheme.startswith(('postgres', 'postgresql')):
         raise ImproperlyConfigured('Unsupported database scheme in DATABASE_URL.')
     if not parsed.path or parsed.path == '/':
         raise ImproperlyConfigured('DATABASE_URL must include a database name.')
