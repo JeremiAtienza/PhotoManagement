@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h1 class="h2 mb-2">Admin analytics</h1>
+    <p class="small-muted">Monitor content health, album distribution, and administrator coverage for your PhotoFlow environment.</p>
+</div>
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card p-4">
+            <h6>Total albums</h6>
+            <h2>{{ album_count }}</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-4">
+            <h6>Total photos</h6>
+            <h2>{{ photo_count }}</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-4">
+            <h6>Public albums</h6>
+            <h2>{{ public_album_count }}</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-4">
+            <h6>Pending review</h6>
+            <h2>{{ pending_review }}</h2>
+        </div>
+    </div>
+</div>
+<div class="card p-4 mt-4">
+    <h5>Operational notes</h5>
+    <p class="small-muted mb-0">Administrators can moderate content, delete any album, and review system usage from this dashboard. Use Django admin for broader user and permission management.</p>
+</div>
+{% endblock %}

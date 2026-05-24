@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="hero-banner p-4 p-md-5 mb-4">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+            <p class="eyebrow mb-2">Personal workspace</p>
+            <h1 class="display-5 fw-bold mb-3">Manage your photo albums with confidence.</h1>
+            <p class="lead mb-4">Track uploads, review moderation status, and organize visual content with a professional, secure workflow.</p>
+            <div class="d-flex gap-2 flex-wrap">
+                <a class="btn btn-primary" href="{% url 'album_create' %}">Create album</a>
+                <a class="btn btn-outline-light" href="{% url 'album_list' %}">Browse albums</a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="stat-panel p-4">
+                <p class="eyebrow mb-2">Snapshot</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Albums owned</span>
+                    <strong>{{ album_count }}</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Photos uploaded</span>
+                    <strong>{{ photo_count }}</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Public albums</span>
+                    <strong>{{ public_album_count }}</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Pending review</span>
+                    <strong>{{ pending_review }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>Secure collaboration</h5>
+            <p class="small-muted mb-0">Owners and administrators retain control over edits and deletion, while public albums remain accessible to approved viewers.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>Cloudinary storage</h5>
+            <p class="small-muted mb-0">All uploads are processed through Cloudinary for optimized delivery, resilient storage, and reliable media handling.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>Deployment ready</h5>
+            <p class="small-muted mb-0">The application is prepared for Render, Gunicorn, and PostgreSQL, with environment-based configuration and WhiteNoise in production.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

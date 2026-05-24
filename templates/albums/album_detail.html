@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.title }} | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+    <div>
+        <p class="small-muted mb-1">{{ object.owner.username }} · {% if object.is_public %}Public{% else %}Private{% endif %}</p>
+        <h1 class="h2 mb-3">{{ object.title }}</h1>
+        <p class="mb-3">{{ object.description|default:'No description provided yet.' }}</p>
+        <div class="d-flex gap-2 flex-wrap">
+            <a class="btn btn-primary" href="{% url 'photo_upload' object.pk %}">Upload photo</a>
+            {% if request.user == object.owner or is_album_admin %}
+                <a class="btn btn-outline-light" href="{% url 'album_update' object.pk %}">Edit album</a>
+                <a class="btn btn-outline-danger" href="{% url 'album_delete' object.pk %}">Delete album</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for photo in photos %}
+    <div class="col-md-6 col-xl-4">
+        <div class="card photo-card h-100 p-3">
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="mb-3">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+                <div>
+                    <h5 class="mb-1">{{ photo.caption|default:'Untitled photo' }}</h5>
+                    <p class="small-muted mb-2">Uploaded by {{ photo.uploaded_by.username|default:'system' }}</p>
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        {% if photo.is_public %}<span class="badge badge-soft">Public</span>{% endif %}
+                        {% if not photo.is_approved %}<span class="badge bg-warning text-dark">Pending review</span>{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap mt-auto">
+                <a class="btn btn-sm btn-outline-light" href="{% url 'photo_edit' photo.pk %}">Edit metadata</a>
+                <a class="btn btn-sm btn-outline-danger" href="{% url 'photo_delete' photo.pk %}">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">This album does not have any photos yet. Upload your first image to begin.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

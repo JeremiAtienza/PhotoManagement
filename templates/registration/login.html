@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card p-4">
+            <h1 class="h3 mb-3">Sign in</h1>
+            <p class="small-muted mb-4">Access your albums and manage uploads securely.</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" type="submit">Log in</button>
+            </form>
+            <p class="mt-3 mb-0">New here? <a href="{% url 'register' %}">Create an account</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

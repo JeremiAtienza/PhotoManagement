@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: photoflow
+    env: python
+    rootDirectory: "."
+    buildCommand: python -m pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate
+    startCommand: gunicorn photoalbum.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_ENV
+        value: production
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: photoflow.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: photoflow-db
+          property: connectionString
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://photoflow.onrender.com
+
+databases:
+  - name: photoflow-db
+    databaseName: photoflow
+    user: photoflow

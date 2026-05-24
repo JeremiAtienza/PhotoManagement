@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Register | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card p-4">
+            <h1 class="h3 mb-3">Create your account</h1>
+            <p class="small-muted mb-4">Register to create personal albums, upload photos, and manage your own content securely.</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
+            <p class="mt-3 mb-0">Already have an account? <a href="{% url 'login' %}">Sign in</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

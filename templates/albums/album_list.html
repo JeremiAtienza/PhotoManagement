@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Albums | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+        <h1 class="h2 mb-1">Album library</h1>
+        <p class="small-muted mb-0">Find your own albums or browse public collections.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" href="{% url 'album_create' %}">Create album</a>
+    </div>
+</div>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-8">
+        <input type="text" name="q" class="form-control" placeholder="Search albums or descriptions" value="{{ request.GET.q }}">
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-outline-light w-100" type="submit">Search</button>
+    </div>
+</form>
+
+<div class="row g-4">
+    {% for album in albums %}
+    <div class="col-lg-4 col-md-6">
+        <div class="card h-100">
+            <div class="p-3">
+                {% with first_photo=album.photos.first %}
+                    {% if first_photo and first_photo.image %}
+                        <img src="{{ first_photo.image.url }}" alt="{{ album.title }}" class="album-thumb">
+                    {% else %}
+                        <div class="placeholder-thumb">No preview available</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="card-body p-3 pt-0">
+                <h5 class="card-title">{{ album.title }}</h5>
+                <p class="small-muted mb-2">Owned by {{ album.owner.username }}</p>
+                <p class="card-text">{{ album.description|truncatechars:110 }}</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge badge-soft">{{ album.photos.count }} photos</span>
+                    <span class="badge badge-soft">{% if album.is_public %}Public{% else %}Private{% endif %}</span>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-sm btn-outline-light" href="{% url 'album_detail' album.pk %}">Open</a>
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'photo_upload' album.pk %}">Upload</a>
+                    {% if request.user == album.owner or is_album_admin %}
+                        <a class="btn btn-sm btn-outline-warning" href="{% url 'album_update' album.pk %}">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No albums match your current search. Create one to get started.</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }}</span></li>
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Photo | PhotoFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card p-4">
+            <h1 class="h3 mb-3">Upload photo</h1>
+            <p class="small-muted mb-4">Add a new image to your album and optionally mark it public or tag it for improved organization.</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary" type="submit">Upload image</button>
+                    <a class="btn btn-outline-light" href="{% url 'album_detail' view.get_album.pk %}">Back to album</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,211 @@
+:root {
+    --bg: #020617;
+    --panel: rgba(15, 23, 42, 0.92);
+    --panel-strong: rgba(15, 23, 42, 0.98);
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #8b5cf6;
+    --border: rgba(148, 163, 184, 0.18);
+    --shadow: 0 18px 50px rgba(15, 23, 42, 0.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 18%),
+        radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 18%),
+        var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+img {
+    max-width: 100%;
+}
+
+.navbar {
+    background: rgba(15, 23, 42, 0.9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #020617;
+    font-weight: 800;
+}
+
+.card,
+.table,
+.alert,
+.form-control,
+.form-select {
+    border: 1px solid var(--border);
+}
+
+.card {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.96));
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.card p,
+.card li,
+.card span {
+    color: inherit;
+}
+
+.card a {
+    color: #dbeafe;
+}
+
+.card a:hover {
+    color: #ffffff;
+}
+
+.hero-banner {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.28), rgba(139, 92, 246, 0.3));
+    border-radius: 1.25rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.stat-panel {
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--border);
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    color: #dbeafe;
+}
+
+.album-thumb,
+.photo-card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 0.85rem;
+}
+
+.placeholder-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(139, 92, 246, 0.2));
+    color: #cbd5e1;
+    text-align: center;
+    padding: 1rem;
+}
+
+.small-muted,
+.footer-note {
+    color: #cbd5e1;
+}
+
+.navbar-text {
+    color: #f8fafc;
+}
+
+.form-label,
+.form-check-label,
+.form-text {
+    color: var(--text);
+}
+
+.badge-soft {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.12);
+    color: #bae6fd;
+    font-weight: 600;
+}
+
+.form-control,
+.form-select {
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--text);
+    -webkit-text-fill-color: var(--text);
+    caret-color: var(--text);
+}
+
+.form-control::placeholder {
+    color: #64748b;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.15);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.9) inset;
+    -webkit-text-fill-color: var(--text);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border: 0;
+    box-shadow: 0 10px 28px rgba(56, 189, 248, 0.22);
+}
+
+.btn-outline-light {
+    border-color: rgba(226, 232, 240, 0.22);
+}
+
+.page-link {
+    background: rgba(15, 23, 42, 0.8);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    color: #020617;
+}
+
+.pagination {
+    --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.15);
+}
+
+.alert {
+    border-radius: 1rem;
+}
+
+.footer-note {
+    font-size: 0.95rem;
+}
