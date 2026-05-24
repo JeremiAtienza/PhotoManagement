@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlparse
 
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
@@ -19,7 +19,17 @@ if DJANGO_ENV == 'production' and not SECRET_KEY:
 
 SECRET_KEY = SECRET_KEY or 'dev-only-insecure-key'
 
-ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,*').split(',') if host.strip()]
+def _normalize_allowed_host(host: str) -> str:
+    host = host.strip()
+    if host.startswith('*.'):
+        return '.' + host[2:]
+    return host
+
+ALLOWED_HOSTS = [
+    _normalize_allowed_host(host)
+    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,*').split(',')
+    if host.strip()
+]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(',') if origin.strip()]
 
 INSTALLED_APPS = [
@@ -67,8 +77,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'photoalbum.wsgi.application'
 
 DATABASE_URL = os.getenv('DATABASE_URL')
+if DJANGO_ENV == 'production' and not DATABASE_URL:
+    raise ImproperlyConfigured('DATABASE_URL must be set in production.')
+
 if DATABASE_URL:
     parsed = urlparse(DATABASE_URL)
+    if parsed.scheme not in ('postgres', 'postgresql'):
+        raise ImproperlyConfigured('Unsupported database scheme in DATABASE_URL.')
+    if not parsed.path or parsed.path == '/':
+        raise ImproperlyConfigured('DATABASE_URL must include a database name.')
+    if not parsed.username or not parsed.password:
+        raise ImproperlyConfigured('DATABASE_URL must include a username and password.')
+    if not parsed.hostname:
+        raise ImproperlyConfigured('DATABASE_URL must include a database host.')
+
+    db_options = {
+        key: value
+        for key, value in parse_qsl(parsed.query)
+        if value
+    }
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -79,6 +107,10 @@ if DATABASE_URL:
             'PORT': parsed.port or 5432,
         }
     }
+
+
+    if db_options:
+        DATABASES['default']['OPTIONS'] = db_options
 else:
     DATABASES = {
         'default': {
@@ -111,23 +143,28 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-STORAGES = {
-    'default': {
-        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
-    },
-    'staticfiles': {
-        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
-    },
-}
-
 CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
 cloudinary_credentials = [
     os.getenv('CLOUDINARY_CLOUD_NAME'),
     os.getenv('CLOUDINARY_API_KEY'),
     os.getenv('CLOUDINARY_API_SECRET'),
 ]
-if DJANGO_ENV == 'production' and not (CLOUDINARY_URL or all(cloudinary_credentials)):
-    raise ImproperlyConfigured('Cloudinary credentials must be set in production.')
+CLOUDINARY_CONFIGURED = bool(CLOUDINARY_URL or all(cloudinary_credentials))
+
+DEFAULT_FILE_STORAGE = (
+    'cloudinary_storage.storage.MediaCloudinaryStorage'
+    if CLOUDINARY_CONFIGURED
+    else 'django.core.files.storage.FileSystemStorage'
+)
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+if DJANGO_ENV == 'production' and not CLOUDINARY_CONFIGURED:
+    import warnings
+
+    warnings.warn(
+        'Cloudinary is not configured in production. Falling back to local media storage.',
+        RuntimeWarning,
+    )
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'

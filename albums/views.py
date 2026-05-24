@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
@@ -13,9 +14,8 @@ from .models import Album, Photo
 
 def landing_page(request):
     """Public landing page for unauthenticated users."""
-    if request.user.is_authenticated:
-        return AlbumListView.as_view()(request)
-    return HttpResponse("Welcome to Photo Album Manager. <a href='/accounts/login/'>Login</a> or <a href='/accounts/register/'>Register</a>")
+    # Redirect all visitors to the dashboard (no login required)
+    return redirect('dashboard')
 
 
 def is_album_admin(user):
@@ -185,7 +185,7 @@ class PhotoDeleteView(PhotoOwnerOrAdminMixin, DeleteView):
         return reverse_lazy('album_detail', kwargs={'pk': self.object.album_id})
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(TemplateView):
     template_name = 'dashboard.html'
 
     def get_context_data(self, **kwargs):
