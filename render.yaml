@@ -10,7 +10,7 @@ services:
       - key: DJANGO_ENV
         value: production
       - key: DEBUG
-        value: false
+        value: true
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
@@ -20,7 +20,7 @@ services:
           name: photoflow-db
           property: connectionString
       - key: CLOUDINARY_URL
-        value: cloudinary://demo:demo@demo
+        value: cloudinary://271951834154829:RLbxKrJlP5WYzkafv2C0K22zrOw@dsmjr2y5c
       - key: CSRF_TRUSTED_ORIGINS
         value: https://photomanagement.onrender.com
 
